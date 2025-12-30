@@ -1,11 +1,10 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
+import http from "http";
+import app from "./src/app.js";
+import { initializeSocket } from "./src/config/socket.js";
+import db from "./src/models/index.js";
+
 dotenv.config();
-
-import http from 'http';
-import app from './src/app.js';
-import { initializeSocket } from './src/config/socket.js';
-import db from './src/models/index.js';
-
 const PORT = process.env.PORT || 3000;
 
 // Create HTTP server
@@ -18,12 +17,12 @@ const io = initializeSocket(server);
 const startServer = async () => {
   try {
     await db.sequelize.authenticate();
-    console.log('✅ Database connection established successfully.');
-    
+    console.log("✅ Database connection established successfully.");
+
     // Sync models in development (use migrations in production)
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === "development") {
       await db.sequelize.sync({ alter: false });
-      console.log('✅ Database models synchronized.');
+      console.log("✅ Database models synchronized.");
     }
 
     server.listen(PORT, () => {
@@ -31,7 +30,7 @@ const startServer = async () => {
       console.log(`📡 Socket.io server is ready`);
     });
   } catch (error) {
-    console.error('❌ Unable to start server:', error);
+    console.error("❌ Unable to start server:", error);
     process.exit(1);
   }
 };
@@ -39,10 +38,10 @@ const startServer = async () => {
 startServer();
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received. Shutting down gracefully...');
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received. Shutting down gracefully...");
   server.close(() => {
-    console.log('Server closed');
+    console.log("Server closed");
     process.exit(0);
   });
 });
