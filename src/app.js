@@ -9,8 +9,23 @@ import { errorHandler } from "./middleware/errorHandler.js";
 const app = express();
 
 // CORS configuration
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:3000",
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
   credentials: true,
   optionsSuccessStatus: 200,
 };

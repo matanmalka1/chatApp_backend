@@ -3,9 +3,14 @@ import { socketAuthMiddleware } from "../middleware/socketAuthMiddleware.js";
 import socketHandler from "../sockets/socketHandler.js";
 
 export const initializeSocket = (server) => {
+  const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
   const io = new Server(server, {
     cors: {
-      origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:3000",
+      origin: allowedOrigins,
       methods: ["GET", "POST"],
       credentials: true,
     },
