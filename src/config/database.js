@@ -17,8 +17,8 @@ export default {
     logging: false,
   },
   production: {
-    dialect: process.env.DB_DIALECT || "sqlite",
-    storage: process.env.DB_STORAGE || "./database.sqlite",
+    dialect: process.env.DB_DIALECT ,
+    storage: process.env.DB_STORAGE ,
     logging: false,
     define: {
       timestamps: true,

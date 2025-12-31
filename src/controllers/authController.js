@@ -51,12 +51,12 @@ export const register = async (req, res, next) => {
     const refreshToken = await generateRefreshToken(user.id);
 
     // Remove password from response
-    const userResponse = user.toJSON();
+
     delete userResponse.password;
 
     res.status(201).json({
       message: "User registered successfully",
-      user: userResponse,
+      user: user.toJSON(),
       accessToken,
       refreshToken,
     });
